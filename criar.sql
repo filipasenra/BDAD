@@ -236,7 +236,7 @@ WITHOUT ROWID;
 -- Table: Veiculo
 CREATE TABLE Veiculo (
     matricula  INTEGER      PRIMARY KEY,
-    disponivel INTEGER      DEFAULT (1) 
+    disponivel INTEGER      DEFAULT (TRUE) 
                             NOT NULL,
     marca      TEXT (6, 20),
     codigoHosp              REFERENCES Hospital (Codigo) 
