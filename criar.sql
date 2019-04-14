@@ -3,6 +3,27 @@
 --
 -- Text encoding used: System
 --
+PRAGMA foreign_keys = on;
+
+drop table if exists Armazem;
+drop table if exists Consulta;
+drop table if exists Departamento;
+drop table if exists Doente;
+drop table if exists Enfermaria;
+drop table if exists EquipaMultidisciplinar;
+drop table if exists Estadia;
+drop table if exists Funcionario;
+drop table if exists Historial;
+drop table if exists Horario;
+drop table if exists Hospital;
+drop table if exists Intervencao;
+drop table if exists Medicamento;
+drop table if exists NumeroDisponivel;
+drop table if exists Pessoa;
+drop table if exists Prescricao;
+drop table if exists Tratamento;
+drop table if exists Veiculo;
+
 PRAGMA foreign_keys = off;
 BEGIN TRANSACTION;
 

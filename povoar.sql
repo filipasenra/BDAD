@@ -10,6 +10,7 @@ INSERT INTO Hospital (Codigo, Nome, Morada, Telefone) VALUES (20, 'Ruben', 'Rua 
 
 -- Table: Armazem
 INSERT INTO Armazem (codigo, codigoHosp) VALUES (1, 20);
+INSERT INTO Armazem (codigo, codigoHosp) VALUES (2, 20);
 
 -- Table: Consulta
 INSERT INTO Consulta (codigo, Data_examinacao) VALUES (1, '20-01-2019');
@@ -142,12 +143,19 @@ INSERT INTO Horario (codigo, codigoFunc, dia, hora_inicio, hora_final, prevencao
 
 -- Table: Intervencao
 INSERT INTO Intervencao (codigo, Nome) VALUES (1, 'Cirugia');
+INSERT INTO Intervencao (codigo, Nome) VALUES (2, 'Colonoscopia');
+INSERT INTO Intervencao (codigo, Nome) VALUES (3, 'Ecografia');
 
 -- Table: Medicamento
 INSERT INTO Medicamento (codigo, Nome) VALUES (23, 'Brufenne');
+INSERT INTO Medicamento (codigo, Nome) VALUES (35, 'Benuron');
+INSERT INTO Medicamento (codigo, Nome) VALUES (36, 'Aranka');
 
 -- Table: NumeroDisponivel
 INSERT INTO NumeroDisponivel (codigoArm, codigoMedi, numero_disponivel) VALUES (1, 23, 200);
+INSERT INTO NumeroDisponivel (codigoArm, codigoMedi, numero_disponivel) VALUES (2, 23, 250);
+INSERT INTO NumeroDisponivel (codigoArm, codigoMedi, numero_disponivel) VALUES (2, 35, 150);
+INSERT INTO NumeroDisponivel (codigoArm, codigoMedi, numero_disponivel) VALUES (1, 36, 123);
 
 -- Table: Prescricao
 INSERT INTO Prescricao (codigoCons, codigoMedi, dosagem, duracao) VALUES (2, 23, '100', 8);
