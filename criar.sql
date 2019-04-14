@@ -3,7 +3,7 @@
 --
 -- Text encoding used: System
 --
-PRAGMA foreign_keys = on;
+PRAGMA foreign_keys = off;
 
 drop table if exists Armazem;
 drop table if exists Consulta;
@@ -24,7 +24,7 @@ drop table if exists Prescricao;
 drop table if exists Tratamento;
 drop table if exists Veiculo;
 
-PRAGMA foreign_keys = off;
+PRAGMA foreign_keys = on;
 BEGIN TRANSACTION;
 
 -- Table: Armazem
@@ -236,7 +236,7 @@ WITHOUT ROWID;
 -- Table: Veiculo
 CREATE TABLE Veiculo (
     matricula  INTEGER      PRIMARY KEY,
-    disponivel INTEGER      DEFAULT (TRUE) 
+    disponivel INTEGER      DEFAULT (1)
                             NOT NULL,
     marca      TEXT (6, 20),
     codigoHosp              REFERENCES Hospital (Codigo) 
@@ -246,4 +246,4 @@ WITHOUT ROWID;
 
 
 COMMIT TRANSACTION;
-PRAGMA foreign_keys = on;
+PRAGMA foreign_keys = off;
