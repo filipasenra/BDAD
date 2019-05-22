@@ -28,7 +28,7 @@ INSERT INTO Departamento (nome, CodigoHosp) VALUES ('Urgencia', 20);
 
 -- Table: Pessoa
 INSERT INTO Pessoa (codigo, nome, nif, morada, DataDeNascimento) VALUES (2019001, 'Rudrigo', '22222222', 'Rua exemplar', '02-02-1970');
-INSERT INTO Pessoa (codigo, nome, nif, morada, DataDeNascimento) VALUES (2019002, 'Assunçãp', '33333333', 'Rua exemplar 4, D', '30-04-1980');
+INSERT INTO Pessoa (codigo, nome, nif, morada, DataDeNascimento) VALUES (2019002, 'Assunï¿½ï¿½p', '33333333', 'Rua exemplar 4, D', '30-04-1980');
 INSERT INTO Pessoa (codigo, nome, nif, morada, DataDeNascimento) VALUES (2019003, 'Maria Madalena', '44444444', 'Rua exemplar 4, E', '21-05-1966');
 INSERT INTO Pessoa (codigo, nome, nif, morada, DataDeNascimento) VALUES (2019004, 'Holga', '55555555', 'Rua diferente 275', '31-06-1996');
 INSERT INTO Pessoa (codigo, nome, nif, morada, DataDeNascimento) VALUES (2019005, 'Luisa', '66666666', 'Rua diferente 30', '01-12-1997');
@@ -48,12 +48,12 @@ INSERT INTO Pessoa (codigo, nome, nif, morada, DataDeNascimento) VALUES (2019018
 INSERT INTO Pessoa (codigo, nome, nif, morada, DataDeNascimento) VALUES (2019019, 'Adriana', '20202020', 'Rua diferente 66', '20-09-1995');
 INSERT INTO Pessoa (codigo, nome, nif, morada, DataDeNascimento) VALUES (2019020, 'Paula', '21212121', 'Rua rica 20', '03-08-1973');
 INSERT INTO Pessoa (codigo, nome, nif, morada, DataDeNascimento) VALUES (2019021, 'Ruan', '23232323', 'Rua Adoentada 3', '07-12-2016');
-INSERT INTO Pessoa (codigo, nome, nif, morada, DataDeNascimento) VALUES (2019022, 'Paulo', '24242424', 'Rua Luis Brandão', '20-05-2000');
+INSERT INTO Pessoa (codigo, nome, nif, morada, DataDeNascimento) VALUES (2019022, 'Paulo', '24242424', 'Rua Luis Brandï¿½o', '20-05-2000');
 INSERT INTO Pessoa (codigo, nome, nif, morada, DataDeNascimento) VALUES (2019023, 'Miguel', '25252525', 'Rua da Guiana Francesa', '08-01-1999');
 INSERT INTO Pessoa (codigo, nome, nif, morada, DataDeNascimento) VALUES (2019024, 'Mariana', '26262626', 'Rua exemplar 29', '27-03-1999');
 INSERT INTO Pessoa (codigo, nome, nif, morada, DataDeNascimento) VALUES (2019025, 'Filipe', '27272727', 'Rua rica 6', '29-06-1969');
 INSERT INTO Pessoa (codigo, nome, nif, morada, DataDeNascimento) VALUES (2019026, 'Susana', '28282828', 'Rua exemplar 230', '09-11-2014');
-INSERT INTO Pessoa (codigo, nome, nif, morada, DataDeNascimento) VALUES (2019027, 'João', '29292929', 'Rua rica 43', '29-08-1999');
+INSERT INTO Pessoa (codigo, nome, nif, morada, DataDeNascimento) VALUES (2019027, 'Joï¿½o', '29292929', 'Rua rica 43', '29-08-1999');
 INSERT INTO Pessoa (codigo, nome, nif, morada, DataDeNascimento) VALUES (2019029, 'Ana Rita', '30303030', 'Rua Ministru Avila', '01-05-2014');
 INSERT INTO Pessoa (codigo, nome, nif, morada, DataDeNascimento) VALUES (2019030, 'Joana', '31313131', 'Rua D.Dinis', '13-04-1996');
 
