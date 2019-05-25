@@ -1,5 +1,5 @@
 --
--- File generated with SQLiteStudio v3.2.1 on sáb mai 25 12:45:08 2019
+-- File generated with SQLiteStudio v3.2.1 on sáb mai 25 13:50:29 2019
 --
 -- Text encoding used: System
 --
@@ -339,6 +339,15 @@ INSERT INTO EquipaMultidisciplinar (
                                    VALUES (
                                        2019005,
                                        2019025
+                                   );
+
+INSERT INTO EquipaMultidisciplinar (
+                                       CodigoFunc,
+                                       codigoDoen
+                                   )
+                                   VALUES (
+                                       2019012,
+                                       2019021
                                    );
 
 INSERT INTO EquipaMultidisciplinar (
@@ -1938,6 +1947,15 @@ CREATE VIEW [Nome dos funcionarios com grandes remuneracoes] AS
            Funcionario.codigo = Pessoa.codigo;
 
 
+-- View: Numero de Doentes pelo qual um funcionario e responsavel
+DROP VIEW IF EXISTS "Numero de Doentes pelo qual um funcionario e responsavel";
+CREATE VIEW [Numero de Doentes pelo qual um funcionario e responsavel] AS
+    SELECT EquipaMultidisciplinar.CodigoFunc,
+           count( * ) AS Numero_de_Doentes
+      FROM EquipaMultidisciplinar
+     GROUP BY CodigoFunc;
+
+
 -- View: Pessoas que receberam uma Vasectomia
 DROP VIEW IF EXISTS "Pessoas que receberam uma Vasectomia";
 CREATE VIEW [Pessoas que receberam uma Vasectomia] AS
@@ -1959,23 +1977,23 @@ CREATE VIEW [Pessoas que receberam uma Vasectomia] AS
 -- View: Relatorio de Paciente Internado
 DROP VIEW IF EXISTS "Relatorio de Paciente Internado";
 CREATE VIEW [Relatorio de Paciente Internado] AS
-    SELECT DISTINCT Doente.codigo AS Codigo_Doente,
-                    Funcionario.codigo AS Codigo_Func,
-                    Enfermaria.NomeDep,
-                    Estadia.Cod_Enfermaria,
-                    Estadia.cama,
-                    Estadia.Data_inicio AS DATA_INICIAL_ESTADIA,
-                    Estadia.Data_final AS DATA_FINAL_ESTADIA
-      FROM Doente,
-           EquipaMultidisciplinar,
-           Funcionario,
-           Estadia,
-           Enfermaria
-     WHERE Doente.codigo = EquipaMultidisciplinar.codigoDoen AND 
-           EquipaMultidisciplinar.CodigoFunc = Funcionario.codigo AND 
-           Estadia.codigoDoen = Doente.codigo AND 
-           Enfermaria.codigo = Estadia.Cod_Enfermaria
-     ORDER BY CODIGO_DOENTE;
+    SELECT Doente.codigo AS Codigo_Doente,
+           Funcionario.codigo AS Codigo_Func,
+           Enfermaria.NomeDep,
+           Estadia.Cod_Enfermaria,
+           Estadia.cama,
+           Estadia.Data_inicio AS DATA_INICIAL_ESTADIA,
+           Estadia.Data_final AS DATA_FINAL_ESTADIA
+      FROM EquipaMultidisciplinar
+           LEFT OUTER JOIN
+           Funcionario ON Funcionario.codigo = EquipaMultidisciplinar.CodigoFunc
+           LEFT OUTER JOIN
+           Doente ON Doente.codigo = EquipaMultidisciplinar.codigoDoen
+           LEFT OUTER JOIN
+           Estadia ON Doente.codigo = Estadia.codigoDoen
+           LEFT OUTER JOIN
+           Enfermaria ON Enfermaria.codigo = Estadia.Cod_Enfermaria
+     ORDER BY Codigo_Doente;
 
 
 COMMIT TRANSACTION;
