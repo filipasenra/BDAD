@@ -1,5 +1,5 @@
 --
--- File generated with SQLiteStudio v3.2.1 on sáb mai 25 12:31:31 2019
+-- File generated with SQLiteStudio v3.2.1 on sáb mai 25 12:45:08 2019
 --
 -- Text encoding used: System
 --
@@ -1869,10 +1869,12 @@ DROP VIEW IF EXISTS "Doentes internados em 20 de Janeiro de 2019";
 CREATE VIEW [Doentes internados em 20 de Janeiro de 2019] AS
     SELECT nome
       FROM Doente,
-           Estadia
+           Estadia,
+           Pessoa
      WHERE Doente.codigo = Estadia.codigoDoen AND 
            Estadia.Data_inicio <= "20/01/2019" AND 
-           "20/01/2019" <= Estadia.Data_final;
+           "20/01/2019" <= Estadia.Data_final AND 
+           Doente.codigo = Pessoa.codigo;
 
 
 -- View: Funcionarios a trabalhar na Pediatria em 20 de Janeiro de 2019
@@ -1924,19 +1926,22 @@ CREATE VIEW [Medicina em escassez] AS
            NumeroDisponivel.numero_disponivel < 10;
 
 
--- View: Nome dos funcionarios com grandes remunerações
-DROP VIEW IF EXISTS "Nome dos funcionarios com grandes remunerações";
-CREATE VIEW [Nome dos funcionarios com grandes remunerações] AS
-    SELECT name,
-           NomeDep
-      FROM Funcionario
-     WHERE (ordenado > 2000);
+-- View: Nome dos funcionarios com grandes remuneracoes
+DROP VIEW IF EXISTS "Nome dos funcionarios com grandes remuneracoes";
+CREATE VIEW [Nome dos funcionarios com grandes remuneracoes] AS
+    SELECT nome,
+           NomeDep,
+           ordenado
+      FROM Funcionario,
+           Pessoa
+     WHERE (ordenado >= 2000) AND 
+           Funcionario.codigo = Pessoa.codigo;
 
 
--- View: Pessoas que receberam uma Vasectomia 
-DROP VIEW IF EXISTS "Pessoas que receberam uma Vasectomia ";
-CREATE VIEW [Pessoas que receberam uma Vasectomia ] AS
-    SELECT name
+-- View: Pessoas que receberam uma Vasectomia
+DROP VIEW IF EXISTS "Pessoas que receberam uma Vasectomia";
+CREATE VIEW [Pessoas que receberam uma Vasectomia] AS
+    SELECT Pessoa.nome
       FROM Pessoa,
            Doente,
            Historial,
