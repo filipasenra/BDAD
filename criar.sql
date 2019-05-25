@@ -1,5 +1,5 @@
 --
--- File generated with SQLiteStudio v3.2.1 on sáb mai 25 10:41:13 2019
+-- File generated with SQLiteStudio v3.2.1 on sáb mai 25 12:31:31 2019
 --
 -- Text encoding used: System
 --
@@ -1861,7 +1861,7 @@ DROP VIEW IF EXISTS "Carrinhas Disponiveis";
 CREATE VIEW [Carrinhas Disponiveis] AS
     SELECT marca
       FROM Veiculo
-     WHERE disponivel = True;
+     WHERE disponivel = 1;
 
 
 -- View: Doentes internados em 20 de Janeiro de 2019
@@ -1901,16 +1901,16 @@ AS
                     Consulta.Data_examinacao,
                     Prescricao.dosagem,
                     Prescricao.duracao,
-                    Medicamento.Nome "Historial de Todos os Doentes"
+                    Medicamento.Nome
       FROM Doente
            LEFT OUTER JOIN
            Historial ON Doente.codigo = Historial.codigoDoe
-           INNER JOIN
+           LEFT OUTER JOIN
            Consulta ON Historial.codigoCons = Consulta.codigo
-           INNER JOIN
+           LEFT OUTER JOIN
            Prescricao ON Prescricao.codigoCons = Consulta.codigo
-           INNER JOIN
-           Medicamento ON Prescricao.codigo = Prescricao.codigoMedi
+           LEFT OUTER JOIN
+           Medicamento ON Medicamento.codigo = Prescricao.codigoMedi
      ORDER BY CODIGO_DOENTE;
 
 
@@ -1949,6 +1949,28 @@ CREATE VIEW [Pessoas que receberam uma Vasectomia ] AS
            Consulta.codigo = Tratamento.codigoCons AND 
            Tratamento.codigoInt = Intervencao.codigo AND 
            Intervencao.Nome = "Vasectomia";
+
+
+-- View: Relatorio de Paciente Internado
+DROP VIEW IF EXISTS "Relatorio de Paciente Internado";
+CREATE VIEW [Relatorio de Paciente Internado] AS
+    SELECT DISTINCT Doente.codigo AS Codigo_Doente,
+                    Funcionario.codigo AS Codigo_Func,
+                    Enfermaria.NomeDep,
+                    Estadia.Cod_Enfermaria,
+                    Estadia.cama,
+                    Estadia.Data_inicio AS DATA_INICIAL_ESTADIA,
+                    Estadia.Data_final AS DATA_FINAL_ESTADIA
+      FROM Doente,
+           EquipaMultidisciplinar,
+           Funcionario,
+           Estadia,
+           Enfermaria
+     WHERE Doente.codigo = EquipaMultidisciplinar.codigoDoen AND 
+           EquipaMultidisciplinar.CodigoFunc = Funcionario.codigo AND 
+           Estadia.codigoDoen = Doente.codigo AND 
+           Enfermaria.codigo = Estadia.Cod_Enfermaria
+     ORDER BY CODIGO_DOENTE;
 
 
 COMMIT TRANSACTION;
