@@ -1,5 +1,5 @@
 --
--- File generated with SQLiteStudio v3.2.1 on dom mai 26 19:28:15 2019
+-- File generated with SQLiteStudio v3.2.1 on dom mai 26 21:06:16 2019
 --
 -- Text encoding used: System
 --
@@ -22,6 +22,15 @@ INSERT INTO Armazem (
                     )
                     VALUES (
                         1,
+                        20
+                    );
+
+INSERT INTO Armazem (
+                        codigo,
+                        codigoHosp
+                    )
+                    VALUES (
+                        2,
                         20
                     );
 
@@ -418,6 +427,108 @@ INSERT INTO Estadia (
                         '21-01-2019',
                         '25-01-2019',
                         1
+                    );
+
+INSERT INTO Estadia (
+                        Codigo,
+                        cama,
+                        codigoDoen,
+                        Data_inicio,
+                        Data_final,
+                        Cod_Enfermaria
+                    )
+                    VALUES (
+                        2,
+                        2,
+                        2019022,
+                        '22-01-2019',
+                        '30-01-2019',
+                        1
+                    );
+
+INSERT INTO Estadia (
+                        Codigo,
+                        cama,
+                        codigoDoen,
+                        Data_inicio,
+                        Data_final,
+                        Cod_Enfermaria
+                    )
+                    VALUES (
+                        3,
+                        3,
+                        2019023,
+                        '17-01-2019',
+                        '22-01-2019',
+                        1
+                    );
+
+INSERT INTO Estadia (
+                        Codigo,
+                        cama,
+                        codigoDoen,
+                        Data_inicio,
+                        Data_final,
+                        Cod_Enfermaria
+                    )
+                    VALUES (
+                        4,
+                        3,
+                        2019023,
+                        '17-01-2019',
+                        '25-01-2019',
+                        2
+                    );
+
+INSERT INTO Estadia (
+                        Codigo,
+                        cama,
+                        codigoDoen,
+                        Data_inicio,
+                        Data_final,
+                        Cod_Enfermaria
+                    )
+                    VALUES (
+                        5,
+                        22,
+                        2019024,
+                        '26-05-2019',
+                        '30-05-2019',
+                        1
+                    );
+
+INSERT INTO Estadia (
+                        Codigo,
+                        cama,
+                        codigoDoen,
+                        Data_inicio,
+                        Data_final,
+                        Cod_Enfermaria
+                    )
+                    VALUES (
+                        7,
+                        21,
+                        2019026,
+                        '10-04-2019',
+                        '20-04-2019',
+                        5
+                    );
+
+INSERT INTO Estadia (
+                        Codigo,
+                        cama,
+                        codigoDoen,
+                        Data_inicio,
+                        Data_final,
+                        Cod_Enfermaria
+                    )
+                    VALUES (
+                        8,
+                        20,
+                        2019027,
+                        '10-02-2019',
+                        '20-03-2019',
+                        5
                     );
 
 
@@ -1155,7 +1266,133 @@ INSERT INTO Intervencao (
                         )
                         VALUES (
                             1,
-                            'Cirugia'
+                            'Remocao Apendice'
+                        );
+
+INSERT INTO Intervencao (
+                            codigo,
+                            Nome
+                        )
+                        VALUES (
+                            2,
+                            'Vasectomia'
+                        );
+
+INSERT INTO Intervencao (
+                            codigo,
+                            Nome
+                        )
+                        VALUES (
+                            3,
+                            'Operacao Plastica ao Nariz'
+                        );
+
+INSERT INTO Intervencao (
+                            codigo,
+                            Nome
+                        )
+                        VALUES (
+                            4,
+                            'Transplante de um rim'
+                        );
+
+INSERT INTO Intervencao (
+                            codigo,
+                            Nome
+                        )
+                        VALUES (
+                            5,
+                            'Transplante de um coracao'
+                        );
+
+INSERT INTO Intervencao (
+                            codigo,
+                            Nome
+                        )
+                        VALUES (
+                            6,
+                            'Transplante de um figado'
+                        );
+
+INSERT INTO Intervencao (
+                            codigo,
+                            Nome
+                        )
+                        VALUES (
+                            7,
+                            'Transplante de medula ossea'
+                        );
+
+INSERT INTO Intervencao (
+                            codigo,
+                            Nome
+                        )
+                        VALUES (
+                            8,
+                            'Insercao de Protese'
+                        );
+
+INSERT INTO Intervencao (
+                            codigo,
+                            Nome
+                        )
+                        VALUES (
+                            9,
+                            'Gastrectomia vertical'
+                        );
+
+INSERT INTO Intervencao (
+                            codigo,
+                            Nome
+                        )
+                        VALUES (
+                            10,
+                            'Gastroplastia vertical bandada'
+                        );
+
+INSERT INTO Intervencao (
+                            codigo,
+                            Nome
+                        )
+                        VALUES (
+                            11,
+                            'Colonoscopia'
+                        );
+
+INSERT INTO Intervencao (
+                            codigo,
+                            Nome
+                        )
+                        VALUES (
+                            12,
+                            'Colporrafia '
+                        );
+
+INSERT INTO Intervencao (
+                            codigo,
+                            Nome
+                        )
+                        VALUES (
+                            13,
+                            'Gastrorrafia '
+                        );
+
+INSERT INTO Intervencao (
+                            codigo,
+                            Nome
+                        )
+                        VALUES (
+                            14,
+                            'Orquidopexia '
+                        );
+
+INSERT INTO Intervencao (
+                            codigo,
+                            Nome
+                        )
+                        VALUES (
+                            15,
+                            'Nefropexia '
                         );
 
 
@@ -1730,6 +1967,15 @@ INSERT INTO Tratamento (
                            codigoInt
                        )
                        VALUES (
+                           3,
+                           2
+                       );
+
+INSERT INTO Tratamento (
+                           codigoCons,
+                           codigoInt
+                       )
+                       VALUES (
                            4,
                            1
                        );
@@ -1838,9 +2084,9 @@ BEGIN
 END;
 
 
--- Trigger: Insert Crate NumeroDisponivel
-DROP TRIGGER IF EXISTS "Insert Crate NumeroDisponivel";
-CREATE TRIGGER [Insert Crate NumeroDisponivel]
+-- Trigger: Insert Create NumeroDisponivel
+DROP TRIGGER IF EXISTS "Insert Create NumeroDisponivel";
+CREATE TRIGGER [Insert Create NumeroDisponivel]
          AFTER INSERT
             ON NumeroDisponivel
 BEGIN
@@ -2005,9 +2251,9 @@ CREATE VIEW [Numero de Doentes pelo qual um funcionario e responsavel] AS
      GROUP BY CodigoFunc;
 
 
--- View: Percetgem de ocupação das enfermarias da urgencia em 20 de Janeiro de 2019
-DROP VIEW IF EXISTS "Percetgem de ocupação das enfermarias da urgencia em 20 de Janeiro de 2019";
-CREATE VIEW [Percetgem de ocupação das enfermarias da urgencia em 20 de Janeiro de 2019] AS
+-- View: Percentagem de ocupação das enfermarias da urgencia em 20 de Janeiro de 2019
+DROP VIEW IF EXISTS "Percentagem de ocupação das enfermarias da urgencia em 20 de Janeiro de 2019";
+CREATE VIEW [Percentagem de ocupação das enfermarias da urgencia em 20 de Janeiro de 2019] AS
     SELECT Enfermaria.codigo,
            percentagem
       FROM Enfermaria,
