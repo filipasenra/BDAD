@@ -1,5 +1,5 @@
 --
--- File generated with SQLiteStudio v3.2.1 on dom mai 26 19:28:15 2019
+-- File generated with SQLiteStudio v3.2.1 on sáb abr 13 20:12:55 2019
 --
 -- Text encoding used: System
 --
@@ -7,12 +7,12 @@ PRAGMA foreign_keys = off;
 BEGIN TRANSACTION;
 
 -- Table: Armazem
-DROP TABLE IF EXISTS Armazem;
-
 CREATE TABLE Armazem (
-    codigo     INTEGER PRIMARY KEY,
-    codigoHosp INTEGER REFERENCES Hospital (Codigo) 
-                       NOT NULL
+    codigo     INT PRIMARY KEY
+                   UNIQUE
+                   NOT NULL ON CONFLICT ABORT,
+    codigoHosp     REFERENCES Hospital (Codigo) 
+                   NOT NULL ON CONFLICT ABORT
 )
 WITHOUT ROWID;
 
@@ -27,11 +27,9 @@ INSERT INTO Armazem (
 
 
 -- Table: Consulta
-DROP TABLE IF EXISTS Consulta;
-
 CREATE TABLE Consulta (
-    codigo          INTEGER PRIMARY KEY,
-    Data_examinacao DATE    NOT NULL
+    codigo          INT  PRIMARY KEY,
+    Data_examinacao DATE NOT NULL ON CONFLICT ABORT
 )
 WITHOUT ROWID;
 
@@ -53,40 +51,11 @@ INSERT INTO Consulta (
                          '22-01-2019'
                      );
 
-INSERT INTO Consulta (
-                         codigo,
-                         Data_examinacao
-                     )
-                     VALUES (
-                         3,
-                         '01-01-2019'
-                     );
-
-INSERT INTO Consulta (
-                         codigo,
-                         Data_examinacao
-                     )
-                     VALUES (
-                         4,
-                         '02-01-2019'
-                     );
-
-INSERT INTO Consulta (
-                         codigo,
-                         Data_examinacao
-                     )
-                     VALUES (
-                         5,
-                         '02-01-2019'
-                     );
-
 
 -- Table: Departamento
-DROP TABLE IF EXISTS Departamento;
-
 CREATE TABLE Departamento (
     nome       TEXT (6, 20) PRIMARY KEY,
-    CodigoHosp INTEGER      REFERENCES Hospital (Codigo) ON DELETE SET NULL
+    CodigoHosp INT          REFERENCES Hospital (Codigo) ON DELETE SET NULL
                                                          ON UPDATE CASCADE
                             NOT NULL
 )
@@ -139,12 +108,10 @@ INSERT INTO Departamento (
 
 
 -- Table: Doente
-DROP TABLE IF EXISTS Doente;
-
 CREATE TABLE Doente (
-    codigo INTEGER PRIMARY KEY
-                 REFERENCES Pessoa (codigo) ON DELETE SET NULL
-                                            ON UPDATE CASCADE
+    codigo INT PRIMARY KEY
+             REFERENCES Pessoa (codigo) ON DELETE SET NULL
+                                        ON UPDATE CASCADE
 )
 WITHOUT ROWID;
 
@@ -213,15 +180,13 @@ INSERT INTO Doente (
 
 
 -- Table: Enfermaria
-DROP TABLE IF EXISTS Enfermaria;
-
 CREATE TABLE Enfermaria (
-    codigo     INTEGER      PRIMARY KEY,
-    capacidade INTEGER      CHECK (capacidade > 0) 
-                            NOT NULL,
+    codigo     INT          PRIMARY KEY,
+    capacidade INT          NOT NULL ON CONFLICT ABORT
+                            CHECK (capacidade > 0),
     NomeDep    TEXT (6, 20) REFERENCES Departamento (nome) ON DELETE SET NULL
                                                            ON UPDATE CASCADE
-                            NOT NULL
+                            NOT NULL ON CONFLICT ABORT
 )
 WITHOUT ROWID;
 
@@ -282,13 +247,13 @@ INSERT INTO Enfermaria (
 
 
 -- Table: EquipaMultidisciplinar
-DROP TABLE IF EXISTS EquipaMultidisciplinar;
-
 CREATE TABLE EquipaMultidisciplinar (
-    CodigoFunc INTEGER REFERENCES Funcionario (codigo) ON DELETE SET NULL
-                                                       ON UPDATE CASCADE,
-    codigoDoen INTEGER REFERENCES Doente (codigo) ON DELETE SET NULL
-                                                  ON UPDATE CASCADE,
+    CodigoFunc INT NOT NULL ON CONFLICT ABORT
+                   REFERENCES Funcionario (codigo) ON DELETE SET NULL
+                                                   ON UPDATE CASCADE,
+    codigoDoen INT REFERENCES Doente (codigo) ON DELETE SET NULL
+                                              ON UPDATE CASCADE
+                   NOT NULL ON CONFLICT ABORT,
     PRIMARY KEY (
         CodigoFunc,
         codigoDoen
@@ -296,115 +261,24 @@ CREATE TABLE EquipaMultidisciplinar (
 )
 WITHOUT ROWID;
 
-INSERT INTO EquipaMultidisciplinar (
-                                       CodigoFunc,
-                                       codigoDoen
-                                   )
-                                   VALUES (
-                                       2019005,
-                                       2019021
-                                   );
-
-INSERT INTO EquipaMultidisciplinar (
-                                       CodigoFunc,
-                                       codigoDoen
-                                   )
-                                   VALUES (
-                                       2019005,
-                                       2019022
-                                   );
-
-INSERT INTO EquipaMultidisciplinar (
-                                       CodigoFunc,
-                                       codigoDoen
-                                   )
-                                   VALUES (
-                                       2019005,
-                                       2019023
-                                   );
-
-INSERT INTO EquipaMultidisciplinar (
-                                       CodigoFunc,
-                                       codigoDoen
-                                   )
-                                   VALUES (
-                                       2019005,
-                                       2019024
-                                   );
-
-INSERT INTO EquipaMultidisciplinar (
-                                       CodigoFunc,
-                                       codigoDoen
-                                   )
-                                   VALUES (
-                                       2019005,
-                                       2019025
-                                   );
-
-INSERT INTO EquipaMultidisciplinar (
-                                       CodigoFunc,
-                                       codigoDoen
-                                   )
-                                   VALUES (
-                                       2019012,
-                                       2019021
-                                   );
-
-INSERT INTO EquipaMultidisciplinar (
-                                       CodigoFunc,
-                                       codigoDoen
-                                   )
-                                   VALUES (
-                                       2019012,
-                                       2019029
-                                   );
-
-INSERT INTO EquipaMultidisciplinar (
-                                       CodigoFunc,
-                                       codigoDoen
-                                   )
-                                   VALUES (
-                                       2019012,
-                                       2019030
-                                   );
-
-INSERT INTO EquipaMultidisciplinar (
-                                       CodigoFunc,
-                                       codigoDoen
-                                   )
-                                   VALUES (
-                                       2019020,
-                                       2019026
-                                   );
-
-INSERT INTO EquipaMultidisciplinar (
-                                       CodigoFunc,
-                                       codigoDoen
-                                   )
-                                   VALUES (
-                                       2019020,
-                                       2019027
-                                   );
-
 
 -- Table: Estadia
-DROP TABLE IF EXISTS Estadia;
-
 CREATE TABLE Estadia (
-    Codigo         INTEGER PRIMARY KEY,
-    cama           INTEGER,
-    codigoDoen     INTEGER REFERENCES Doente (codigo) ON DELETE SET NULL
+    cama           INT,
+    codigoDoen     INT     REFERENCES Doente (codigo) ON DELETE SET NULL
                                                       ON UPDATE CASCADE,
-    Data_inicio    DATE    NOT NULL,
-    Data_final     DATE    NOT NULL,
+    Data_inicio    DATE    NOT NULL ON CONFLICT ABORT,
+    Data_final     DATE    NOT NULL ON CONFLICT ABORT,
     Cod_Enfermaria INTEGER REFERENCES Enfermaria (codigo) ON DELETE SET NULL
                                                           ON UPDATE CASCADE,
-    CHECK (Data_inicio <= Data_final) 
+    PRIMARY KEY (
+        cama,
+        codigoDoen
+    )
 )
 WITHOUT ROWID;
 
 INSERT INTO Estadia (
-                        Codigo,
                         cama,
                         codigoDoen,
                         Data_inicio,
@@ -412,18 +286,30 @@ INSERT INTO Estadia (
                         Cod_Enfermaria
                     )
                     VALUES (
-                        1,
-                        1,
+                        4,
                         2019021,
-                        '21-01-2019',
-                        '25-01-2019',
-                        1
+                        '21-02-2019',
+                        '03-03-2019',
+                        2
+                    );
+
+INSERT INTO Estadia (
+                        cama,
+                        codigoDoen,
+                        Data_inicio,
+                        Data_final,
+                        Cod_Enfermaria
+                    )
+                    VALUES (
+                        10,
+                        2019024,
+                        '05-05-2019',
+                        '21-05-2019',
+                        3
                     );
 
 
 -- Table: Funcionario
-DROP TABLE IF EXISTS Funcionario;
-
 CREATE TABLE Funcionario (
     codigo   INT          PRIMARY KEY
                           REFERENCES Pessoa (codigo) ON DELETE SET NULL
@@ -698,13 +584,13 @@ INSERT INTO Funcionario (
 
 
 -- Table: Historial
-DROP TABLE IF EXISTS Historial;
-
 CREATE TABLE Historial (
-    codigoDoe      REFERENCES Doente (codigo) ON DELETE SET NULL
+    codigoDoe      NOT NULL ON CONFLICT ABORT
+                   REFERENCES Doente (codigo) ON DELETE SET NULL
                                               ON UPDATE CASCADE,
     codigoCons INT REFERENCES Consulta (codigo) ON DELETE SET NULL
-                                                ON UPDATE CASCADE,
+                                                ON UPDATE CASCADE
+                   NOT NULL ON CONFLICT ABORT,
     PRIMARY KEY (
         codigoDoe,
         codigoCons
@@ -726,403 +612,32 @@ INSERT INTO Historial (
                           codigoCons
                       )
                       VALUES (
-                          2019024,
-                          3
-                      );
-
-INSERT INTO Historial (
-                          codigoDoe,
-                          codigoCons
-                      )
-                      VALUES (
-                          2019025,
-                          4
-                      );
-
-INSERT INTO Historial (
-                          codigoDoe,
-                          codigoCons
-                      )
-                      VALUES (
-                          2019027,
-                          5
-                      );
-
-INSERT INTO Historial (
-                          codigoDoe,
-                          codigoCons
-                      )
-                      VALUES (
                           2019029,
                           1
                       );
 
 
 -- Table: Horario
-DROP TABLE IF EXISTS Horario;
-
 CREATE TABLE Horario (
-    codigo      INTEGER PRIMARY KEY,
-    codigoFunc  INTEGER REFERENCES Funcionario (codigo) ON DELETE SET NULL
+    codigo      INT     PRIMARY KEY,
+    codigoFunc  INT     REFERENCES Funcionario (codigo) ON DELETE SET NULL
                                                         ON UPDATE CASCADE
-                        NOT NULL,
-    dia         DATE    NOT NULL,
-    hora_inicio TIME    NOT NULL,
-    hora_final  TIME    NOT NULL,
-    prevencao   INTEGER DEFAULT (0) 
-                        NOT NULL
+                        NOT NULL ON CONFLICT ABORT,
+    dia         DATE    NOT NULL ON CONFLICT ABORT,
+    hora_inicio TIME    NOT NULL ON CONFLICT ABORT,
+    hora_final  TIME    NOT NULL ON CONFLICT ABORT,
+    prevencao   BOOLEAN NOT NULL ON CONFLICT ABORT
+                        DEFAULT (FALSE) 
 )
 WITHOUT ROWID;
 
-INSERT INTO Horario (
-                        codigo,
-                        codigoFunc,
-                        dia,
-                        hora_inicio,
-                        hora_final,
-                        prevencao
-                    )
-                    VALUES (
-                        1,
-                        2019001,
-                        '1/1/2019',
-                        '8:00',
-                        '16:00',
-                        'FALSE'
-                    );
-
-INSERT INTO Horario (
-                        codigo,
-                        codigoFunc,
-                        dia,
-                        hora_inicio,
-                        hora_final,
-                        prevencao
-                    )
-                    VALUES (
-                        2,
-                        2019002,
-                        '1/1/2019',
-                        '16:00',
-                        '24:00',
-                        'FALSE'
-                    );
-
-INSERT INTO Horario (
-                        codigo,
-                        codigoFunc,
-                        dia,
-                        hora_inicio,
-                        hora_final,
-                        prevencao
-                    )
-                    VALUES (
-                        3,
-                        2019003,
-                        '1/12019',
-                        '8:00',
-                        '16:00',
-                        'FALSE'
-                    );
-
-INSERT INTO Horario (
-                        codigo,
-                        codigoFunc,
-                        dia,
-                        hora_inicio,
-                        hora_final,
-                        prevencao
-                    )
-                    VALUES (
-                        4,
-                        2019004,
-                        '1/1/2019',
-                        '16:00',
-                        '24:00',
-                        'FALSE'
-                    );
-
-INSERT INTO Horario (
-                        codigo,
-                        codigoFunc,
-                        dia,
-                        hora_inicio,
-                        hora_final,
-                        prevencao
-                    )
-                    VALUES (
-                        5,
-                        2019005,
-                        '1/1/2019',
-                        '8:00',
-                        '16:00',
-                        'FALSE'
-                    );
-
-INSERT INTO Horario (
-                        codigo,
-                        codigoFunc,
-                        dia,
-                        hora_inicio,
-                        hora_final,
-                        prevencao
-                    )
-                    VALUES (
-                        6,
-                        2019006,
-                        '1/1/2019',
-                        '0:00',
-                        '8:00',
-                        'FALSE'
-                    );
-
-INSERT INTO Horario (
-                        codigo,
-                        codigoFunc,
-                        dia,
-                        hora_inicio,
-                        hora_final,
-                        prevencao
-                    )
-                    VALUES (
-                        7,
-                        2019007,
-                        '1/1/2019',
-                        '8:00',
-                        '16:00',
-                        'FALSE'
-                    );
-
-INSERT INTO Horario (
-                        codigo,
-                        codigoFunc,
-                        dia,
-                        hora_inicio,
-                        hora_final,
-                        prevencao
-                    )
-                    VALUES (
-                        8,
-                        2019008,
-                        '1/1/2019',
-                        '16:00',
-                        '24:00',
-                        'FALSE'
-                    );
-
-INSERT INTO Horario (
-                        codigo,
-                        codigoFunc,
-                        dia,
-                        hora_inicio,
-                        hora_final,
-                        prevencao
-                    )
-                    VALUES (
-                        9,
-                        2019009,
-                        '1/1/2019',
-                        '0:00',
-                        '24:00',
-                        'TRUE'
-                    );
-
-INSERT INTO Horario (
-                        codigo,
-                        codigoFunc,
-                        dia,
-                        hora_inicio,
-                        hora_final,
-                        prevencao
-                    )
-                    VALUES (
-                        10,
-                        2019010,
-                        '1/1/2019',
-                        '8:00',
-                        '16:00',
-                        'FALSE'
-                    );
-
-INSERT INTO Horario (
-                        codigo,
-                        codigoFunc,
-                        dia,
-                        hora_inicio,
-                        hora_final,
-                        prevencao
-                    )
-                    VALUES (
-                        11,
-                        2019011,
-                        '1/1/2019',
-                        '8:00',
-                        '16:00',
-                        'FALSE'
-                    );
-
-INSERT INTO Horario (
-                        codigo,
-                        codigoFunc,
-                        dia,
-                        hora_inicio,
-                        hora_final,
-                        prevencao
-                    )
-                    VALUES (
-                        12,
-                        2019012,
-                        '1/1/2019',
-                        '8:00',
-                        '16:00',
-                        'FALSE'
-                    );
-
-INSERT INTO Horario (
-                        codigo,
-                        codigoFunc,
-                        dia,
-                        hora_inicio,
-                        hora_final,
-                        prevencao
-                    )
-                    VALUES (
-                        13,
-                        2019013,
-                        '1/1/2019',
-                        '8:00',
-                        '16:00',
-                        'FALSE'
-                    );
-
-INSERT INTO Horario (
-                        codigo,
-                        codigoFunc,
-                        dia,
-                        hora_inicio,
-                        hora_final,
-                        prevencao
-                    )
-                    VALUES (
-                        14,
-                        2019014,
-                        '1/1/2019',
-                        '8:00',
-                        '16:00',
-                        'FALSE'
-                    );
-
-INSERT INTO Horario (
-                        codigo,
-                        codigoFunc,
-                        dia,
-                        hora_inicio,
-                        hora_final,
-                        prevencao
-                    )
-                    VALUES (
-                        15,
-                        2019015,
-                        '1/1/2019',
-                        '8:00',
-                        '16:00',
-                        'FALSE'
-                    );
-
-INSERT INTO Horario (
-                        codigo,
-                        codigoFunc,
-                        dia,
-                        hora_inicio,
-                        hora_final,
-                        prevencao
-                    )
-                    VALUES (
-                        16,
-                        2019016,
-                        '1/1/2019',
-                        '8:00',
-                        '16:00',
-                        'FALSE'
-                    );
-
-INSERT INTO Horario (
-                        codigo,
-                        codigoFunc,
-                        dia,
-                        hora_inicio,
-                        hora_final,
-                        prevencao
-                    )
-                    VALUES (
-                        17,
-                        2019017,
-                        '1/1/2019',
-                        '8:00',
-                        '16:00',
-                        'FALSE'
-                    );
-
-INSERT INTO Horario (
-                        codigo,
-                        codigoFunc,
-                        dia,
-                        hora_inicio,
-                        hora_final,
-                        prevencao
-                    )
-                    VALUES (
-                        18,
-                        2019018,
-                        '1/1/2019',
-                        '8:00',
-                        '16:00',
-                        'FALSE'
-                    );
-
-INSERT INTO Horario (
-                        codigo,
-                        codigoFunc,
-                        dia,
-                        hora_inicio,
-                        hora_final,
-                        prevencao
-                    )
-                    VALUES (
-                        19,
-                        2019019,
-                        '1/1/2019',
-                        '16:00',
-                        '24:00',
-                        'FALSE'
-                    );
-
-INSERT INTO Horario (
-                        codigo,
-                        codigoFunc,
-                        dia,
-                        hora_inicio,
-                        hora_final,
-                        prevencao
-                    )
-                    VALUES (
-                        20,
-                        2019020,
-                        '1/1/2019',
-                        '0:00',
-                        '24:00',
-                        'TRUE'
-                    );
-
 
 -- Table: Hospital
-DROP TABLE IF EXISTS Hospital;
-
 CREATE TABLE Hospital (
     Codigo   INTEGER      PRIMARY KEY,
-    Nome     TEXT (6, 48) NOT NULL,
-    Morada   TEXT (6, 48) NOT NULL,
-    Telefone TEXT (9, 9)  NOT NULL
+    Nome     TEXT (6, 48) NOT NULL ON CONFLICT ABORT,
+    Morada   TEXT (6, 48) NOT NULL ON CONFLICT ABORT,
+    Telefone TEXT (9, 9)  NOT NULL ON CONFLICT ABORT
 )
 WITHOUT ROWID;
 
@@ -1141,10 +656,8 @@ INSERT INTO Hospital (
 
 
 -- Table: Intervencao
-DROP TABLE IF EXISTS Intervencao;
-
 CREATE TABLE Intervencao (
-    codigo INTEGER      PRIMARY KEY,
+    codigo INT          PRIMARY KEY,
     Nome   TEXT (6, 20) NOT NULL ON CONFLICT ABORT
 )
 WITHOUT ROWID;
@@ -1160,10 +673,8 @@ INSERT INTO Intervencao (
 
 
 -- Table: Medicamento
-DROP TABLE IF EXISTS Medicamento;
-
 CREATE TABLE Medicamento (
-    codigo INTEGER      PRIMARY KEY,
+    codigo INT          PRIMARY KEY,
     Nome   TEXT (6, 20) NOT NULL ON CONFLICT ABORT
 )
 WITHOUT ROWID;
@@ -1179,15 +690,13 @@ INSERT INTO Medicamento (
 
 
 -- Table: NumeroDisponivel
-DROP TABLE IF EXISTS NumeroDisponivel;
-
 CREATE TABLE NumeroDisponivel (
-    codigoArm         INTEGER REFERENCES Armazem (codigo) ON DELETE SET NULL
+    codigoArm         INT REFERENCES Armazem (codigo) ON DELETE SET NULL
+                                                      ON UPDATE CASCADE,
+    codigoMedi        INT REFERENCES Medicamento (codigo) ON DELETE SET NULL
                                                           ON UPDATE CASCADE,
-    codigoMedi        INTEGER REFERENCES Medicamento (codigo) ON DELETE SET NULL
-                                                              ON UPDATE CASCADE,
-    numero_disponivel INTEGER CHECK (numero_disponivel >= 0) 
-                              NOT NULL,
+    numero_disponivel INT NOT NULL ON CONFLICT ABORT
+                          CHECK (numero_disponivel >= 0),
     PRIMARY KEY (
         codigoArm,
         codigoMedi
@@ -1203,20 +712,18 @@ INSERT INTO NumeroDisponivel (
                              VALUES (
                                  1,
                                  23,
-                                 198
+                                 200
                              );
 
 
 -- Table: Pessoa
-DROP TABLE IF EXISTS Pessoa;
-
 CREATE TABLE Pessoa (
-    codigo           INTEGER      PRIMARY KEY,
-    nome             TEXT (3, 48) NOT NULL,
+    codigo           INT          PRIMARY KEY,
+    nome             TEXT (6, 48) NOT NULL ON CONFLICT ABORT,
     nif              TEXT (9, 9)  UNIQUE
-                                  NOT NULL,
-    morada           TEXT (6, 48) NOT NULL,
-    DataDeNascimento DATE         NOT NULL
+                                  NOT NULL ON CONFLICT ABORT,
+    morada           TEXT (6, 48) NOT NULL ON CONFLICT ABORT,
+    DataDeNascimento DATE         NOT NULL ON CONFLICT ABORT
 )
 WITHOUT ROWID;
 
@@ -1657,36 +1164,21 @@ INSERT INTO Pessoa (
 
 
 -- Table: Prescricao
-DROP TABLE IF EXISTS Prescricao;
-
 CREATE TABLE Prescricao (
-    codigo     INTEGER      PRIMARY KEY,
-    codigoCons INTEGER      REFERENCES Consulta (codigo) ON DELETE SET NULL
+    codigoCons INT          REFERENCES Consulta (codigo) ON DELETE SET NULL
                                                          ON UPDATE CASCADE,
-    codigoMedi INTEGER      REFERENCES Medicamento (codigo) ON DELETE SET NULL
+    codigoMedi INT          REFERENCES Medicamento (codigo) ON DELETE SET NULL
                                                             ON UPDATE CASCADE,
-    dosagem    TEXT (6, 48) NOT NULL,
-    duracao    INTEGER      NOT NULL
+    dosagem    TEXT (6, 48) NOT NULL ON CONFLICT ABORT,
+    duracao    INT          NOT NULL ON CONFLICT ABORT,
+    PRIMARY KEY (
+        codigoCons,
+        codigoMedi
+    )
 )
 WITHOUT ROWID;
 
 INSERT INTO Prescricao (
-                           codigo,
-                           codigoCons,
-                           codigoMedi,
-                           dosagem,
-                           duracao
-                       )
-                       VALUES (
-                           1,
-                           1,
-                           23,
-                           '2',
-                           10
-                       );
-
-INSERT INTO Prescricao (
-                           codigo,
                            codigoCons,
                            codigoMedi,
                            dosagem,
@@ -1694,21 +1186,18 @@ INSERT INTO Prescricao (
                        )
                        VALUES (
                            2,
-                           2,
                            23,
-                           '10',
-                           4
+                           '100',
+                           8
                        );
 
 
 -- Table: Tratamento
-DROP TABLE IF EXISTS Tratamento;
-
 CREATE TABLE Tratamento (
-    codigoCons INTEGER REFERENCES Consulta (codigo) ON DELETE SET NULL
-                                                    ON UPDATE CASCADE,
-    codigoInt  INTEGER REFERENCES Intervencao (codigo) ON DELETE SET NULL
-                                                       ON UPDATE CASCADE,
+    codigoCons INT REFERENCES Consulta (codigo) ON DELETE SET NULL
+                                                ON UPDATE CASCADE,
+    codigoInt  INT REFERENCES Intervencao (codigo) ON DELETE SET NULL
+                                                   ON UPDATE CASCADE,
     PRIMARY KEY (
         codigoCons,
         codigoInt
@@ -1725,35 +1214,15 @@ INSERT INTO Tratamento (
                            1
                        );
 
-INSERT INTO Tratamento (
-                           codigoCons,
-                           codigoInt
-                       )
-                       VALUES (
-                           4,
-                           1
-                       );
-
-INSERT INTO Tratamento (
-                           codigoCons,
-                           codigoInt
-                       )
-                       VALUES (
-                           5,
-                           1
-                       );
-
 
 -- Table: Veiculo
-DROP TABLE IF EXISTS Veiculo;
-
 CREATE TABLE Veiculo (
-    matricula  INTEGER      PRIMARY KEY,
-    disponivel INTEGER      DEFAULT (1) 
-                            NOT NULL,
+    matricula  INT          PRIMARY KEY,
+    disponivel BOOLEAN      NOT NULL ON CONFLICT ABORT
+                            DEFAULT (TRUE),
     marca      TEXT (6, 20),
     codigoHosp              REFERENCES Hospital (Codigo) 
-                            NOT NULL
+                            NOT NULL ON CONFLICT ABORT
 )
 WITHOUT ROWID;
 
@@ -1765,7 +1234,7 @@ INSERT INTO Veiculo (
                     )
                     VALUES (
                         '01 GG 07 ',
-                        1,
+                        'True',
                         'Pjou',
                         20
                     );
@@ -1778,7 +1247,7 @@ INSERT INTO Veiculo (
                     )
                     VALUES (
                         '12 AD 42',
-                        1,
+                        'True',
                         'Porche',
                         20
                     );
@@ -1791,7 +1260,7 @@ INSERT INTO Veiculo (
                     )
                     VALUES (
                         '33 FF 50',
-                        1,
+                        'True',
                         'Hunda',
                         20
                     );
@@ -1804,265 +1273,10 @@ INSERT INTO Veiculo (
                     )
                     VALUES (
                         '60 MG 09',
-                        0,
+                        'False',
                         'Mata-Velhos',
                         20
                     );
-
-
--- Trigger: Before_Insert
-DROP TRIGGER IF EXISTS Before_Insert;
-CREATE TRIGGER Before_Insert
-        BEFORE INSERT
-            ON Prescricao
-      FOR EACH ROW
-BEGIN
-    SELECT CASE WHEN 0 = (
-                             SELECT numero_disponivel
-                               FROM numeroDisponivel
-                              WHERE NEW.codigoMedi = codigoMedi
-                         )
-           THEN RAISE(ABORT, "nao ha mais medicamentos") END;
-END;
-
-
--- Trigger: Delete Departamento
-DROP TRIGGER IF EXISTS "Delete Departamento";
-CREATE TRIGGER [Delete Departamento]
-         AFTER DELETE
-            ON Departamento
-      FOR EACH ROW
-BEGIN
-    DELETE FROM Enfermaria
-          WHERE nomeDep = OLD.nome;
-END;
-
-
--- Trigger: Insert Crate NumeroDisponivel
-DROP TRIGGER IF EXISTS "Insert Crate NumeroDisponivel";
-CREATE TRIGGER [Insert Crate NumeroDisponivel]
-         AFTER INSERT
-            ON NumeroDisponivel
-BEGIN
-    INSERT INTO NumeroDisponivel VALUES (
-                                     (
-                                         SELECT Armazem.codigo
-                                           FROM Armazem
-                                     ),
-                                     NEW.codigo,
-                                     0
-                                 );
-END;
-
-
--- Trigger: Insert_Prescricao
-DROP TRIGGER IF EXISTS Insert_Prescricao;
-CREATE TRIGGER Insert_Prescricao
-         AFTER INSERT
-            ON Prescricao
-      FOR EACH ROW
-BEGIN
-    UPDATE NumeroDisponivel
-       SET numero_disponivel = numero_disponivel - 1
-     WHERE codigoMedi = NEW.codigoMedi;
-END;
-
-
--- Trigger: Maior de idade 
-DROP TRIGGER IF EXISTS "Maior de idade ";
-CREATE TRIGGER [Maior de idade ]
-         AFTER INSERT
-            ON Funcionario
-BEGIN
-    SELECT CASE WHEN "31/12/2000" > (
-                                        SELECT dataDeNascimento
-                                          FROM Pessoa
-                                         WHERE NEW.codigo = codigo
-                                    )
-           THEN RAISE(ABORT, "nao e maior de iade") END;
-END;
-
-
--- Trigger: UpdateSalary
-DROP TRIGGER IF EXISTS UpdateSalary;
-CREATE TRIGGER UpdateSalary
-        BEFORE UPDATE OF prevencao
-            ON Horario
-      FOR EACH ROW
-          WHEN NEW.prevencao = TRUE
-BEGIN
-    UPDATE Funcionario
-       SET ordenado = ordenado + 50
-     WHERE codigo = NEW.codigoFunc;
-END;
-
-
--- View: Carrinhas Disponiveis
-DROP VIEW IF EXISTS "Carrinhas Disponiveis";
-CREATE VIEW [Carrinhas Disponiveis] AS
-    SELECT marca
-      FROM Veiculo
-     WHERE disponivel = 1;
-
-
--- View: Doentes internados em 20 de Janeiro de 2019
-DROP VIEW IF EXISTS "Doentes internados em 20 de Janeiro de 2019";
-CREATE VIEW [Doentes internados em 20 de Janeiro de 2019] AS
-    SELECT nome
-      FROM Doente,
-           Estadia,
-           Pessoa
-     WHERE Doente.codigo = Estadia.codigoDoen AND 
-           Estadia.Data_inicio <= "20/01/2019" AND 
-           "20/01/2019" <= Estadia.Data_final AND 
-           Doente.codigo = Pessoa.codigo;
-
-
--- View: Funcionarios a trabalhar na Pediatria em 20 de Janeiro de 2019
-DROP VIEW IF EXISTS "Funcionarios a trabalhar na Pediatria em 20 de Janeiro de 2019";
-CREATE VIEW [Funcionarios a trabalhar na Pediatria em 20 de Janeiro de 2019] AS
-    SELECT Nome
-      FROM Pessoa,
-           Funcionario,
-           Horario
-     WHERE Pessoa.codigo = Funcionario.codigo AND 
-           Funcionario.codigo = Horario.codigoFunc AND 
-           Horario.dia = "20/01/2019";
-
-
--- View: Historial de todos os doentes
-DROP VIEW IF EXISTS "Historial de todos os doentes";
-CREATE VIEW [Historial de todos os doentes] (
-    Codigo_Doente,
-    Data_examinacao,
-    dosagem,
-    duracao,
-    Nome
-)
-AS
-    SELECT DISTINCT Doente.codigo AS Codigo_Doente,
-                    Consulta.Data_examinacao,
-                    Prescricao.dosagem,
-                    Prescricao.duracao,
-                    Medicamento.Nome
-      FROM Doente
-           LEFT OUTER JOIN
-           Historial ON Doente.codigo = Historial.codigoDoe
-           LEFT OUTER JOIN
-           Consulta ON Historial.codigoCons = Consulta.codigo
-           LEFT OUTER JOIN
-           Prescricao ON Prescricao.codigoCons = Consulta.codigo
-           LEFT OUTER JOIN
-           Medicamento ON Medicamento.codigo = Prescricao.codigoMedi
-     ORDER BY CODIGO_DOENTE;
-
-
--- View: Medicina em escassez
-DROP VIEW IF EXISTS "Medicina em escassez";
-CREATE VIEW [Medicina em escassez] AS
-    SELECT Medicamento.Nome,
-           sum(NumeroDisponivel.numero_disponivel) 
-      FROM Medicamento,
-           NumeroDisponivel
-     WHERE NumeroDisponivel.codigoMedi = Medicamento.codigo
-     GROUP BY NumeroDisponivel.codigoMedi
-    HAVING sum(NumeroDisponivel.numero_disponivel) < 10;
-
-
--- View: Medicos em prevenção nos cuidados intensivos
-DROP VIEW IF EXISTS "Medicos em prevenção nos cuidados intensivos";
-CREATE VIEW [Medicos em prevenção nos cuidados intensivos] AS
-    SELECT Pessoa.codigo,
-           Pessoa.nome
-      FROM Pessoa,
-           Funcionario,
-           Horario,
-           Departamento
-     WHERE Pessoa.codigo = Funcionario.codigo AND 
-           Funcionario.codigo = Horario.codigoFunc AND 
-           Horario.prevencao = TRUE AND 
-           Departamento.nome = 'cuidados intensivos';
-
-
--- View: Nome dos funcionarios com grandes remuneracoes
-DROP VIEW IF EXISTS "Nome dos funcionarios com grandes remuneracoes";
-CREATE VIEW [Nome dos funcionarios com grandes remuneracoes] AS
-    SELECT nome,
-           NomeDep,
-           ordenado
-      FROM Funcionario,
-           Pessoa
-     WHERE (ordenado >= 2000) AND 
-           Funcionario.codigo = Pessoa.codigo;
-
-
--- View: Numero de Doentes pelo qual um funcionario e responsavel
-DROP VIEW IF EXISTS "Numero de Doentes pelo qual um funcionario e responsavel";
-CREATE VIEW [Numero de Doentes pelo qual um funcionario e responsavel] AS
-    SELECT EquipaMultidisciplinar.CodigoFunc,
-           count( * ) AS Numero_de_Doentes
-      FROM EquipaMultidisciplinar
-     GROUP BY CodigoFunc;
-
-
--- View: Percetgem de ocupação das enfermarias da urgencia em 20 de Janeiro de 2019
-DROP VIEW IF EXISTS "Percetgem de ocupação das enfermarias da urgencia em 20 de Janeiro de 2019";
-CREATE VIEW [Percetgem de ocupação das enfermarias da urgencia em 20 de Janeiro de 2019] AS
-    SELECT Enfermaria.codigo,
-           percentagem
-      FROM Enfermaria,
-           (
-               SELECT numero
-                 FROM Enfermaria,
-                      Doente,
-                      Estadia,
-                      Pessoa
-                WHERE numero = ( (count) * (Doente.codigo = Estadia.codigoDoen AND 
-                                            Estadia.Data_inicio <= "20/01/2019" AND 
-                                            "20/01/2019" <= Estadia.Data_final AND 
-                                            Doente.codigo = Pessoa.codigo) / Enfermaria.capacidade) 
-           )
-           AS percentagem;
-
-
--- View: Pessoas que receberam uma Vasectomia
-DROP VIEW IF EXISTS "Pessoas que receberam uma Vasectomia";
-CREATE VIEW [Pessoas que receberam uma Vasectomia] AS
-    SELECT Pessoa.nome
-      FROM Pessoa,
-           Doente,
-           Historial,
-           Consulta,
-           Tratamento,
-           Intervencao
-     WHERE Pessoa.codigo = Doente.codigo AND 
-           Doente.codigo = Historial.codigoDoe AND 
-           Historial.codigoCons = Consulta.codigo AND 
-           Consulta.codigo = Tratamento.codigoCons AND 
-           Tratamento.codigoInt = Intervencao.codigo AND 
-           Intervencao.Nome = "Vasectomia";
-
-
--- View: Relatorio de Paciente Internado
-DROP VIEW IF EXISTS "Relatorio de Paciente Internado";
-CREATE VIEW [Relatorio de Paciente Internado] AS
-    SELECT Doente.codigo AS Codigo_Doente,
-           Funcionario.codigo AS Codigo_Func,
-           Enfermaria.NomeDep,
-           Estadia.Cod_Enfermaria,
-           Estadia.cama,
-           Estadia.Data_inicio AS DATA_INICIAL_ESTADIA,
-           Estadia.Data_final AS DATA_FINAL_ESTADIA
-      FROM EquipaMultidisciplinar
-           LEFT OUTER JOIN
-           Funcionario ON Funcionario.codigo = EquipaMultidisciplinar.CodigoFunc
-           LEFT OUTER JOIN
-           Doente ON Doente.codigo = EquipaMultidisciplinar.codigoDoen
-           INNER JOIN
-           Estadia ON Doente.codigo = Estadia.codigoDoen
-           INNER JOIN
-           Enfermaria ON Enfermaria.codigo = Estadia.Cod_Enfermaria
-     ORDER BY Codigo_Doente;
 
 
 COMMIT TRANSACTION;
