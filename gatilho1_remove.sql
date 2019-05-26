@@ -1,1 +1,0 @@
-DROP TRIGGER IF EXISTS Before_Insert;

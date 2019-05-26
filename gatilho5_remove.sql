@@ -1,1 +1,0 @@
-DROP TRIGGER IF EXISTS "Maior de idade ";
